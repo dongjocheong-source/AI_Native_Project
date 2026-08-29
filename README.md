@@ -1,46 +1,37 @@
-# Go-To-AI-Native-Archive
+# [목차] AI Native Project
+여기서는 변화하는 정보들을 정리하고 실제 실행 프로젝트에 대한 정보를 공유하느 공간입니다. <br>
+아래는 웹페이지를 구성하는 목차 정보입니다.
 
-**Go-To-AI-Native-World**에서 분리되어 나온 자매 사이트입니다.
-강좌 정리, 진행 중인 프로젝트, 짧은 노트, 최신 뉴스를 모아둡니다.
+## [A] 뉴스_타임라인
+- E01_AI시대생존전략 
+- E02_Karpathy LLM
+- E03_AI로보틱스
+- E04_소형언어모델
+- E05_Langfuse 설치 및 사용 가이드
+- E06_LLM Fallback 메커니즘 완벽 가이드
+- E07_LLM 속도 파헤쳐보기
+- E08_NVIDIA GPU 모니터링 완벽 가이드
+- E09_AI서버관리꿀팁 
+---
 
-메인 화면 상단의 "AI 네이티브를 위한 4단계 정공법" 커버는
-`Total_Go_to_AI_Native_v1_1_brief3.pptx`의 내용을 그대로 옮긴 것입니다.
+## [B] 노트
+- F01_프롬프팅
+- F02_Skill References
+- F03_Skill활용
+- F04_MCP활용
+- F05_컨넥터활용
+- F06_디자인노트
+- F07_영상_미디어
+- F08_Claude활용
+- F10_아이디어 스케치
+- F11_교육강좌사이트
+- F12_참고사이트
+---
+## [C] 프로젝트
+- G01_MyWiki프로젝트
+- G02_GoToAiNative
+- G03_주식프로젝트
+- G04_영상프로젝트
+---
 
-## 구조
-
-이 저장소는 원본 사이트와 완전히 동일한 코드 구조(순수 HTML/CSS/JS, 빌드 도구 없음)를
-그대로 재사용합니다. 유일한 진입점은 `data.js`입니다.
-
-- `index.html` — 앱 셸(사이드바 + 메인 포털/카테고리 뷰)
-- `data.js` — **콘텐츠를 추가·수정·삭제하는 유일한 곳**
-- `main.js` — `data.js`를 읽어 사이드바·카드 그리드를 렌더링 (수정 불필요)
-- `icons.js` — 사이드바/카드에 쓰이는 SVG 아이콘 (수정 불필요)
-- `generate_items.js` — `data.js`를 읽어 `items/*.html` 상세 페이지를 생성하는 Node 스크립트
-- `items/` — 카테고리별 상세 페이지
-  - `K_강좌/` — 강좌 요약 페이지 (완성된 독립 HTML이므로 전부 `skipGenerate: true`)
-  - `G_프로젝트/` — 프로젝트 상세 페이지 (자동 생성됨)
-  - `F_노트/` — 노트 상세 페이지 (손으로 만든 커스텀 HTML이므로 전부 `skipGenerate: true`)
-  - `N_최신뉴스/` — 아직 항목 없음. `data.js`의 `news00.items`에 추가하면 자동으로 카드가 생깁니다.
-
-## 카테고리
-
-| ID | 라벨 | 설명 |
-| --- | --- | --- |
-| `course00` | 강좌 | Claude Academy 등에서 학습한 강좌 요약 12건 |
-| `project00` | 프로젝트 | Go-To-AI-Native-World에서 이전된 프로젝트 4건 |
-| `note00` | 노트 | Go-To-AI-Native-World에서 이전된 노트 11건 |
-| `news00` | 최신 뉴스 | 신규 카테고리 (현재 비어있음) |
-
-## 콘텐츠 추가하는 법
-
-1. `data.js`의 해당 카테고리 `items` 배열에 `{ id, title, meta, hue, body }`를 추가합니다.
-2. 직접 디자인한 상세 페이지를 쓰려면 `skipGenerate: true`를 추가하고
-   `items/{folder}/{id}.html`을 손으로 작성합니다.
-3. 자동 생성 페이지로 충분하면 `skipGenerate`를 생략하고
-   `node generate_items.js`를 실행합니다 (이미 `skipGenerate: true`인 항목은 건드리지 않습니다).
-
-## 주의
-
-`node generate_items.js`를 실행하면 `skipGenerate`가 없는 항목의 페이지만
-템플릿으로 새로 씁니다. 강좌(`K_강좌`)와 노트(`F_노트`)는 전부 손으로 만든
-콘텐츠이므로 실수로 지워지지 않도록 모두 `skipGenerate: true`로 표시돼 있습니다.
+## [D] 학습자료
