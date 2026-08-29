@@ -85,8 +85,8 @@ const CATEGORIES = [
 
   // ── C00 : 프로젝트 (Projects) ────────────────────────────────────────────────────────
   {
-    id: "project00",
-    folder: "G_프로젝트",
+    id: "c00",
+    folder: "C_프로젝트",
     label: "프로젝트",
     icon: "folder",
     description: "MyWiki, GoToAiNative 등 진행 중인 개인 프로젝트를 관리합니다.",
@@ -105,9 +105,9 @@ const CATEGORIES = [
   
   // ── 최신 뉴스 (Latest News) ───────────────────────────────────────────
   {
-    id: "news00",
-    folder: "N_최신뉴스",
-    label: "최신 뉴스",
+    id: "d00",
+    folder: "D_학습자료",
+    label: "학습자료",
     icon: "rss",
     description: "AI 업계 최신 소식과 눈여겨볼 뉴스를 시간순으로 기록합니다.",
     items: [
