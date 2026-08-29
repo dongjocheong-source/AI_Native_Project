@@ -111,13 +111,14 @@ const CATEGORIES = [
     icon: "rss",
     description: "AI 업계 최신 소식과 눈여겨볼 뉴스를 시간순으로 기록합니다.",
     items: [
-      // 아직 등록된 항목이 없습니다. 여기에 { id, title, meta, hue, body }
-      // 형식으로 새 뉴스를 추가하면 자동으로 카드가 생성됩니다.
+      { id: "d01", title: "MyWiki프로젝트", meta: "D01", hue: 265,
+        body: "MyWiki프로젝트에 대한 내용을 준비 중입니다." },
+      { id: "d02", title: "GoToAiNative", meta: "D02", hue: 265,
+        body: "GoToAiNative에 대한 내용을 준비 중입니다." },
+      { id: "d03", title: "주식프로젝트", meta: "D03", hue: 265,
+        body: "과거 History 및 패턴 분석을 통한 주식 매매 프로그램 입니다." },
+      { id: "d04", title: "영상프로젝트", meta: "D04", hue: 265,
+        body: "영상프로젝트에 대한 내용 입니다." },
     ],
   },
-];
 
-// Node/CommonJS export (used by generate_items.js).
-if (typeof module !== "undefined") {
-  module.exports = { CATEGORIES };
-}
