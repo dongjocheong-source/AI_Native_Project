@@ -1,5 +1,5 @@
 # [목차] AI Native Project
-여기서는 변화하는 정보들을 정리하고 실제 실행 프로젝트에 대한 정보를 공유하느 공간입니다. <br>
+뉴스 및 업데이트 되는 정보들을 정리하고 실제 실행 프로젝트에 대한 정보를 공유하는 공간입니다. <br>
 아래는 웹페이지를 구성하는 목차 정보입니다.
 
 ## [A] 뉴스_타임라인
@@ -17,9 +17,9 @@
 ## [B] 노트
 - B01_프롬프팅
 - B02_Skill References
-- B03_Skill활용
-- B04_MCP활용
-- B05_컨넥터활용
+- B03_Skill References (Detail)
+- B04_MCP/Connector
+- B05_MCP/Connector Reference (Detail)
 - B06_디자인노트
 - B07_영상_미디어
 - B08_Claude활용
