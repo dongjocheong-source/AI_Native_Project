@@ -34,5 +34,17 @@
 - C04_영상프로젝트
 ---
 
-## [D] 학습자료
-- D01_On-Premise_LLM
+## [D] 학습자료 (강좌 요약)
+- D01_AI Capabilities and Limitations
+- D02_Teaching AI Fluency
+- D03_Claude Code 101
+- D04_Introduction to Claude Cowork
+- D05_Claude Platform 101
+- D06_Claude Code in Action
+- D07_Introduction to Model Context Protocol
+- D08_MCP: Advanced Topics
+- D09_Introduction to Subagents
+- D10_The AI-Native SDLC Playbook
+- D11_Introduction to Agent Skills
+- D12_Building with the Claude API
+---
