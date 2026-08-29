@@ -103,22 +103,23 @@ const CATEGORIES = [
   },
 
   
-  // ── 최신 뉴스 (Latest News) ───────────────────────────────────────────
+  // ── D00 ────────────────────────────────────────────────────────────
   {
     id: "d00",
     folder: "D_학습자료",
     label: "학습자료",
-    icon: "rss",
-    description: "AI 업계 최신 소식과 눈여겨볼 뉴스를 시간순으로 기록합니다.",
+    icon: "plus",
+    description: "온프레미스/온디바이스 LLM, 추론, 자연어처리 등 심화 학습 자료를 모읍니다.",
     items: [
-      { id: "d01", title: "MyWiki프로젝트", meta: "D01", hue: 265,
-        body: "MyWiki프로젝트에 대한 내용을 준비 중입니다." },
-      { id: "d02", title: "GoToAiNative", meta: "D02", hue: 265,
-        body: "GoToAiNative에 대한 내용을 준비 중입니다." },
-      { id: "d03", title: "주식프로젝트", meta: "D03", hue: 265,
-        body: "과거 History 및 패턴 분석을 통한 주식 매매 프로그램 입니다." },
-      { id: "d04", title: "영상프로젝트", meta: "D04", hue: 265,
-        body: "영상프로젝트에 대한 내용 입니다." },
+      { id: "d01", title: "On-Premise LLM", meta: "D01", hue: 275,
+        body: "On-Premise LLM에 대한 내용을 준비 중입니다." },
+      { id: "d02", title: "OnDeviceAI", meta: "D02", hue: 275,
+        body: "OnDeviceAI에 대한 내용을 준비 중입니다." },
+      { id: "d04", title: "Inference / Reasoning", meta: "D04", hue: 275,
+        body: "Inference / Reasoning에 대한 내용을 준비 중입니다." },
+      { id: "d05", title: "자연어이해", meta: "D05", hue: 275,
+        body: "자연어이해에 대한 내용을 준비 중입니다." },
+      { id: "d06", title: "NLP", meta: "D06", hue: 275,
+        body: "NLP에 대한 내용을 준비 중입니다." },
     ],
   },
-
