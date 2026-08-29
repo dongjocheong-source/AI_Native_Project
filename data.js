@@ -1,23 +1,4 @@
-/**
- * data.js — single source of truth for categories + items.
- * (Go-To-AI-Native-Archive — the "강좌 / 프로젝트 / 노트 / 최신 뉴스" companion
- * site split off from Go-To-AI-Native-World.)
- *
- * This is the ONLY place you edit to add/remove/change content.
- * - index.html reads this file directly (as a <script> tag) to render
- *   the sidebar and item grid.
- * - generate_items.js reads this same object (via Node's require) to
- *   (re)generate the static detail pages under items/*.html.
- *
- * Schema: see the sibling Go-To-AI-Native-World/data.js for full docs.
- * Categories here that hold hand-written pages (강좌, 노트, and most of
- * 프로젝트) are marked `skipGenerate: true` on every item so that running
- * `node generate_items.js` never overwrites their custom HTML.
- */
 
-/**
- * LATEST_POSTS — 메인 포털 맨 아래 "최신 글" 카드 3장.
- */
 const LATEST_POSTS = [
   { cat: "course00", item: "k03", date: "2026년 8월 27일",
     summary: "Claude Code의 에이전틱 루프, 설치, 워크플로우, 컨텍스트 관리, 코드 리뷰, 커스터마이징을 정리했습니다." },
@@ -75,24 +56,6 @@ const CATEGORIES = [
     ],
   },
 
-  // ── 프로젝트 (Projects) — Go-To-AI-Native-World에서 이전 ─────────────
-  {
-    id: "project00",
-    folder: "G_프로젝트",
-    label: "프로젝트",
-    icon: "folder",
-    description: "MyWiki, GoToAiNative 등 진행 중인 개인 프로젝트를 관리합니다.",
-    items: [
-      { id: "g01", title: "MyWiki프로젝트", meta: "G01", hue: 265,
-        body: "MyWiki프로젝트에 대한 내용을 준비 중입니다." },
-      { id: "g02", title: "GoToAiNative", meta: "G02", hue: 265,
-        body: "GoToAiNative에 대한 내용을 준비 중입니다." },
-      { id: "g03", title: "주식프로젝트", meta: "G03", hue: 265,
-        body: "과거 History 및 패턴 분석을 통한 주식 매매 프로그램 입니다." },
-      { id: "g04", title: "영상프로젝트", meta: "G04", hue: 265,
-        body: "영상프로젝트에 대한 내용 입니다." },
-    ],
-  },
 
   // ── 노트 (Notes) — Go-To-AI-Native-World에서 이전 ────────────────────
   {
@@ -138,6 +101,26 @@ const CATEGORIES = [
     ],
   },
 
+  // ── 프로젝트 (Projects) — Go-To-AI-Native-World에서 이전 ─────────────
+  {
+    id: "project00",
+    folder: "G_프로젝트",
+    label: "프로젝트",
+    icon: "folder",
+    description: "MyWiki, GoToAiNative 등 진행 중인 개인 프로젝트를 관리합니다.",
+    items: [
+      { id: "g01", title: "MyWiki프로젝트", meta: "G01", hue: 265,
+        body: "MyWiki프로젝트에 대한 내용을 준비 중입니다." },
+      { id: "g02", title: "GoToAiNative", meta: "G02", hue: 265,
+        body: "GoToAiNative에 대한 내용을 준비 중입니다." },
+      { id: "g03", title: "주식프로젝트", meta: "G03", hue: 265,
+        body: "과거 History 및 패턴 분석을 통한 주식 매매 프로그램 입니다." },
+      { id: "g04", title: "영상프로젝트", meta: "G04", hue: 265,
+        body: "영상프로젝트에 대한 내용 입니다." },
+    ],
+  },
+
+  
   // ── 최신 뉴스 (Latest News) ───────────────────────────────────────────
   {
     id: "news00",
