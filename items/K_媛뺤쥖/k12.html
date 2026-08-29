@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Building with the Claude API — 기초부터 에이전트까지 7개 모듈</title>
+<meta name="description" content="Claude API 개발 강좌 정리 — API 기초·모델 선택, 프롬프트 평가·엔지니어링, 툴 사용·확장 기능, MCP, RAG 파이프라인, Claude Code·Computer Use, 에이전틱 워크플로우까지 7개 모듈 67개 레슨">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&family=Noto+Serif+KR:wght@600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1B1330;
+    --ink-2:#261B42;
+    --ink-deep:#100B1E;
+    --paper:#FFFFFF;
+    --paper-tint:#F5F1FC;
+    --line:#E5DBF7;
+    --text-dark:#211934;
+    --text-muted:#655B80;
+    --acc-a:#7C3AED;
+    --acc-a-ink:#6D28D9;
+    --acc-b:#D97706;
+    --acc-b-ink:#B45309;
+    --acc-c:#0D9488;
+    --acc-c-ink:#0F766E;
+    --danger:#D6455B;
+    --radius:18px;
+    --shadow:0 16px 40px rgba(27,19,48,0.12);
+    --maxw:1160px;
+    --mono:'JetBrains Mono',ui-monospace,'SFMono-Regular',Consolas,monospace;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    font-family:'Noto Sans KR','Apple SD Gothic Neo',sans-serif;
+    color:var(--text-dark);
+    background:var(--paper);
+    line-height:1.68;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Noto Serif KR','Noto Sans KR',serif;margin:0;}
+  a{color:inherit;text-decoration:none;}
+  img,svg{display:block;}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 32px;}
+  code{font-family:var(--mono);}
+
+  #progress{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--acc-a),var(--acc-b),var(--acc-c));z-index:9999;width:0%;transition:width .1s linear;}
+
+  header.nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:16px 0;transition:background .3s ease, padding .3s ease, box-shadow .3s ease;}
+  header.nav .wrap{display:flex;align-items:center;justify-content:space-between;}
+  header.nav.scrolled{background:rgba(27,19,48,0.92);backdrop-filter:blur(10px);padding:11px 0;box-shadow:0 4px 20px rgba(0,0,0,0.18);}
+  .brand{font-weight:900;font-size:14.5px;color:var(--paper);letter-spacing:.3px;display:flex;align-items:center;gap:9px;}
+  .brand .dot2{display:inline-flex;gap:3px;}
+  .brand .dot2 span{width:7px;height:7px;border-radius:50%;display:block;}
+  .brand .dot2 span:nth-child(1){background:var(--acc-a);}
+  .brand .dot2 span:nth-child(2){background:var(--acc-b);}
+  nav.links{display:flex;gap:10px;flex-wrap:wrap;}
+  nav.links a{font-size:11px;font-weight:500;color:#DCCFF5;opacity:.85;transition:opacity .2s,color .2s;white-space:nowrap;}
+  nav.links a:hover{opacity:1;color:var(--acc-b);}
+  .hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;}
+  .hamburger span{width:22px;height:2px;background:var(--paper);display:block;}
+  .mobile-menu{display:none;position:fixed;top:0;right:0;bottom:0;width:74%;max-width:300px;background:var(--ink-2);z-index:1100;padding:90px 32px;flex-direction:column;gap:18px;box-shadow:-10px 0 30px rgba(0,0,0,.3);overflow-y:auto;}
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{color:#E9E0FA;font-size:14px;font-weight:500;}
+  .mobile-close{position:fixed;top:22px;right:6%;z-index:1200;display:none;color:var(--paper);font-size:26px;background:none;border:none;cursor:pointer;}
+
+  section{position:relative;padding:88px 0;scroll-margin-top:84px;}
+  .kicker{font-size:12px;font-weight:700;letter-spacing:3px;color:var(--acc-a);text-transform:uppercase;margin-bottom:14px;}
+  .kicker.on-dark{color:var(--acc-b);}
+  h2.title{font-size:clamp(23px,3vw,32px);font-weight:700;color:var(--text-dark);line-height:1.32;}
+  h2.title.on-dark{color:var(--paper);}
+  .lede{font-size:14.5px;color:var(--text-muted);max-width:760px;margin-top:14px;}
+  .lede.on-dark{color:#DCCFF5;}
+  .lede b{color:var(--text-dark);}
+  .lede.on-dark b{color:var(--paper);}
+
+  .reveal{opacity:0;transform:translateY(22px);transition:opacity .7s ease, transform .7s ease;}
+  .reveal.in-view{opacity:1;transform:translateY(0);}
+
+  .note-box{background:#FFF6DC;color:#6B4E00;border-radius:var(--radius);padding:16px 22px;font-size:13.5px;margin-top:24px;}
+  .note-box b{color:#8A6300;}
+  .safe-box{background:#F1E9FB;color:#3E1E68;border-radius:var(--radius);padding:16px 22px;font-size:13.5px;margin-top:24px;border-left:4px solid var(--acc-a);}
+  .safe-box b{color:#3E1E68;}
+
+  .hero-simple{
+    background:radial-gradient(circle at 18% 22%, rgba(124,58,237,0.26), transparent 45%),
+               radial-gradient(circle at 84% 18%, rgba(217,119,6,0.18), transparent 45%),
+               linear-gradient(180deg,var(--ink) 0%, var(--ink-deep) 100%);
+    color:var(--paper);min-height:90vh;display:flex;align-items:center;overflow:hidden;padding:120px 0 60px;
+  }
+  .hero-simple .wrap{position:relative;z-index:2;}
+  .hero-simple .eyebrow{font-size:12px;letter-spacing:4px;font-weight:700;color:var(--acc-b);text-transform:uppercase;margin-bottom:16px;}
+  .hero-simple h1{font-size:clamp(26px,4.2vw,42px);font-weight:900;line-height:1.26;margin-bottom:16px;}
+  .hero-simple h1 .accent-word{background:linear-gradient(90deg,var(--acc-a),var(--acc-c));-webkit-background-clip:text;background-clip:text;color:transparent;}
+  .hero-simple p.sub{font-size:clamp(13.5px,1.5vw,16px);color:#DCCFF5;max-width:760px;margin-bottom:0;}
+  .chip-row{display:flex;flex-wrap:wrap;gap:9px;margin-top:24px;}
+  .chip{padding:9px 16px;border-radius:30px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);font-size:12px;font-weight:500;color:#E9E0FA;}
+
+  .module-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;margin-top:36px;}
+  .module-card{border-radius:16px;padding:22px;box-shadow:var(--shadow);background:var(--paper);border-left:5px solid var(--acc-a);}
+  .module-card.b{border-left-color:var(--acc-b);}
+  .module-card.c{border-left-color:var(--acc-c);}
+  .module-card .mnum{font-family:'Noto Serif KR',serif;font-weight:700;font-size:12px;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;}
+  .module-card h4{font-size:16px;font-weight:700;color:var(--ink);margin:0 0 8px;}
+  .module-card p{font-size:12.8px;color:var(--text-muted);margin:0 0 10px;line-height:1.65;}
+  .module-card .topic-row{display:flex;flex-wrap:wrap;gap:6px;}
+  .module-card .topic{font-size:11px;background:var(--paper-tint);color:var(--acc-a-ink);padding:4px 10px;border-radius:12px;font-weight:600;}
+
+  .deflist{margin-top:32px;display:flex;flex-direction:column;gap:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .def{display:grid;grid-template-columns:250px 1fr;gap:0;background:var(--paper);border-bottom:1px solid var(--line);}
+  .def:last-child{border-bottom:none;}
+  .def .k{background:var(--paper-tint);padding:16px 20px;font-family:'Noto Serif KR',serif;font-weight:700;font-size:14.5px;color:var(--ink);display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .def .v{padding:16px 22px;font-size:12.8px;color:var(--text-muted);line-height:1.7;}
+  .def .v b{color:var(--text-dark);}
+  .def .v code{background:var(--paper-tint);padding:1px 5px;border-radius:4px;}
+
+  .compare-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:36px;}
+  .cc-card{border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);border-top:4px solid var(--acc-a);background:var(--paper);}
+  .cc-card.b{border-top-color:var(--acc-b);}
+  .cc-card.c{border-top-color:var(--acc-c);}
+  .cc-card h4{font-size:12px;font-weight:700;margin:0 0 9px;text-transform:uppercase;letter-spacing:.6px;color:var(--text-muted);}
+  .cc-card .flow{font-family:'Noto Serif KR',serif;font-size:17px;font-weight:700;margin-bottom:9px;color:var(--ink);}
+  .cc-card p.small{font-size:12.4px;color:var(--text-muted);margin:0;line-height:1.65;}
+  .cc-card p.small b{color:var(--text-dark);}
+
+  .cmp-table-wrap{margin-top:32px;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow);}
+  .cmp-table{width:100%;border-collapse:collapse;background:var(--paper);}
+  .cmp-table th{padding:13px 16px;font-size:11px;font-weight:700;text-align:left;letter-spacing:.5px;text-transform:uppercase;}
+  .cmp-table th:first-child{background:var(--ink);color:var(--paper);width:130px;}
+  .cmp-table th.col-a{background:var(--acc-a);color:#fff;}
+  .cmp-table td{padding:12px 16px;font-size:12.4px;border-bottom:1px solid var(--line);vertical-align:top;}
+  .cmp-table tr:last-child td{border-bottom:none;}
+  .cmp-table td:first-child{font-weight:700;color:var(--ink);background:var(--paper-tint);}
+
+  .summary{background:linear-gradient(180deg,var(--ink-2) 0%, var(--ink-deep) 100%);color:var(--paper);}
+  .recap-list{margin-top:28px;display:flex;flex-direction:column;gap:0;}
+  .recap-item{display:flex;align-items:flex-start;gap:16px;padding:15px 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+  .recap-item:last-child{border-bottom:none;}
+  .recap-item .num{font-family:'Noto Serif KR',serif;font-size:13.5px;color:var(--acc-b);font-weight:700;width:26px;flex-shrink:0;}
+  .recap-item .rt{font-size:13.3px;line-height:1.65;color:#E3D9F8;}
+  .recap-item .rt b{color:var(--paper);}
+  .final-line{margin-top:26px;padding:18px 22px;border-radius:var(--radius);background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);font-size:13px;color:#DCCFF5;}
+  .final-line b{color:var(--paper);}
+
+  footer{background:var(--ink-deep);color:#7A6D99;padding:30px 0;font-size:11.5px;}
+  footer .wrap{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;}
+  .totop{border:1px solid rgba(255,255,255,0.2);padding:8px 16px;border-radius:20px;font-size:11px;}
+
+  @media(max-width:900px){
+    nav.links{display:none;}
+    .hamburger{display:flex;}
+    .module-grid,.compare-3{grid-template-columns:1fr;}
+    .def{grid-template-columns:1fr;}
+    .def .k{border-bottom:1px solid var(--line);}
+    section{padding:64px 0;}
+  }
+  @media(max-width:560px){
+    .cmp-table{font-size:11px;}
+    .cmp-table th,.cmp-table td{padding:9px 10px;}
+  }
+</style>
+
+<style id="__archive_backlink_style">
+  #__archive_backlink{
+    position:fixed; top:14px; left:14px; z-index:99999;
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(20,20,24,0.82); color:#f2f2f2 !important;
+    font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR",sans-serif;
+    font-size:12.5px; font-weight:600; text-decoration:none !important;
+    padding:8px 14px; border-radius:999px; border:1px solid rgba(255,255,255,0.18);
+    backdrop-filter:blur(6px); box-shadow:0 4px 14px rgba(0,0,0,0.28);
+    transition:background .2s, transform .2s;
+  }
+  #__archive_backlink:hover{ background:rgba(30,30,36,0.92); transform:translateX(-2px); }
+  @media (max-width:560px){ #__archive_backlink{ font-size:11.5px; padding:7px 12px; top:10px; left:10px; } }
+</style>
+</head>
+<body>
+<a id="__archive_backlink" href="../../index.html#course00">← 강좌 목록으로</a>
+
+
+<div id="progress"></div>
+
+<header class="nav" id="siteNav">
+  <div class="wrap">
+    <div class="brand"><span class="dot2"><span></span><span></span></span> Building with API</div>
+    <nav class="links">
+      <a href="#m1">1.기초</a>
+      <a href="#m2">2.평가</a>
+      <a href="#m3">3.툴·기능</a>
+      <a href="#m4">4.MCP</a>
+      <a href="#m5">5.RAG</a>
+      <a href="#m6">6.Code·CU</a>
+      <a href="#m7">7.워크플로우</a>
+    </nav>
+    <button class="hamburger" id="hamBtn" aria-label="메뉴 열기"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#m1">모듈1 · API 시작하기</a>
+  <a href="#m2">모듈2 · 프롬프트 평가·엔지니어링</a>
+  <a href="#m3">모듈3 · Claude 기능·툴 사용</a>
+  <a href="#m4">모듈4 · MCP</a>
+  <a href="#m5">모듈5 · RAG</a>
+  <a href="#m6">모듈6 · Claude Code·Computer Use</a>
+  <a href="#m7">모듈7 · 에이전틱 워크플로우</a>
+</div>
+<button class="mobile-close" id="mobileClose">×</button>
+
+<main>
+
+<section class="hero-simple" id="top">
+  <div class="wrap">
+    <div class="eyebrow">Building with the Claude API · Developer Track</div>
+    <h1>기초 API 호출에서<br><span class="accent-word">자율 에이전트까지</span></h1>
+    <p class="sub">Claude API를 프로덕션 애플리케이션에 통합해야 하는 개발자를 위한 강좌입니다. 챗봇·자동화 도구·AI 기능을 만들 때 필요한 구현 패턴을 다룹니다. API 인증·기본 요청부터 프롬프트 평가, 툴 사용, MCP, RAG 파이프라인, Claude Code·Computer Use, 에이전틱 워크플로우까지 7개 모듈·67개 레슨·9시간·퀴즈 8회로 구성됩니다.</p>
+    <div class="chip-row">
+      <a class="chip" href="#m3">Tool Use</a>
+      <a class="chip" href="#m5">RAG Pipelines</a>
+      <a class="chip" href="#m7">Parallelization·Chaining·Routing</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 1 -->
+<section id="m1">
+  <div class="wrap reveal">
+    <div class="kicker">Module 01 · 2 hr</div>
+    <h2 class="title">Getting Started with Claude</h2>
+    <p class="lede">API 인증, 기본 요청, 대화 관리, 시스템 프롬프트, 구조화된 출력 생성까지 <b>기초 전체</b>를 다룹니다.</p>
+    <div class="deflist">
+      <div class="def"><div class="k">모델 개요 &amp; 선택</div><div class="v">Claude 모델 계열의 차이를 이해하고 <b>유스케이스에 맞는 모델</b>을 고릅니다.</div></div>
+      <div class="def"><div class="k">요청 &amp; 멀티턴 대화</div><div class="v">첫 요청을 보내고, <b>멀티턴 대화</b>로 확장해 간단한 챗봇을 만듭니다.</div></div>
+      <div class="def"><div class="k">시스템 프롬프트 &amp; Temperature</div><div class="v">시스템 프롬프트로 역할을 부여하고, <b>temperature</b>로 출력의 창의성·일관성을 조절합니다.</div></div>
+      <div class="def"><div class="k">스트리밍 &amp; 구조화된 데이터</div><div class="v">응답을 <b>스트리밍</b>으로 받고, 정해진 스키마의 <b>구조화된 데이터</b>를 안정적으로 뽑아냅니다.</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 2 -->
+<section id="m2" style="background:var(--paper-tint);">
+  <div class="wrap reveal">
+    <div class="kicker">Module 02 · 2 hr</div>
+    <h2 class="title">Prompt Engineering &amp; Evaluation</h2>
+    <p class="lede">효과적인 프롬프트를 쓰고 테스트하는 <b>체계적인 접근법</b>을 배웁니다. 감(feeling)이 아니라 <b>평가 파이프라인</b>으로 프롬프트를 검증합니다.</p>
+    <div class="compare-3">
+      <div class="cc-card">
+        <h4>Eval Workflow</h4>
+        <div class="flow">평가 파이프라인</div>
+        <p class="small">테스트 데이터셋 생성 → 평가 실행 → <b>모델 기반/코드 기반 채점</b>으로 프롬프트의 강점·약점을 객관적으로 드러냅니다.</p>
+      </div>
+      <div class="cc-card b">
+        <h4>Prompting Techniques</h4>
+        <div class="flow">프롬프트 엔지니어링</div>
+        <p class="small">명확하고 직접적으로 쓰기, 구체적으로 명시하기, <b>XML 태그</b>로 구조화하기, 예시 제공하기 — 4가지 핵심 기법.</p>
+      </div>
+      <div class="cc-card c">
+        <h4>Try It Out</h4>
+        <div class="flow">직접 실습</div>
+        <p class="small">직접 프롬프트를 평가해보며, 기법을 적용하기 전후의 <b>차이를 체감</b>합니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 3 -->
+<section id="m3">
+  <div class="wrap reveal">
+    <div class="kicker">Module 03 · 3 hr</div>
+    <h2 class="title">Claude Features and Tool Use</h2>
+    <p class="lede">Claude가 함수를 호출해 외부 시스템과 상호작용하는 애플리케이션을 만듭니다. 확장 사고·이미지/PDF 지원·프롬프트 캐싱까지 <b>고급 기능</b>도 다룹니다. 이 모듈이 강좌에서 가장 깁니다(22개 영상).</p>
+    <div class="module-grid">
+      <div class="module-card">
+        <div class="mnum">Tool Use Core</div>
+        <h4>툴 사용 핵심</h4>
+        <p>툴 함수·스키마 정의, 메시지 블록 처리, 툴 결과 전송, 멀티턴 대화 속 툴 사용, <b>여러 툴을 동시에</b> 구현하기.</p>
+        <div class="topic-row"><span class="topic">tool schemas</span><span class="topic">multi-turn tools</span></div>
+      </div>
+      <div class="module-card b">
+        <div class="mnum">Advanced Tool Patterns</div>
+        <h4>고급 툴 패턴</h4>
+        <p><b>배치 툴(batch tool)</b>, 구조화된 데이터를 위한 툴, 세밀한 툴 호출(fine-grained), <b>텍스트 편집 툴</b>, 웹 검색 툴.</p>
+        <div class="topic-row"><span class="topic">batch tool</span><span class="topic">text edit tool</span><span class="topic">web search</span></div>
+      </div>
+      <div class="module-card c">
+        <div class="mnum">Reasoning &amp; Multimodal</div>
+        <h4>추론·멀티모달</h4>
+        <p><b>확장 사고(Extended Thinking)</b>, 이미지 지원, PDF 지원, 인용(Citations)까지 — 복잡한 추론과 문서 이해를 다룹니다.</p>
+        <div class="topic-row"><span class="topic">extended thinking</span><span class="topic">image/PDF</span><span class="topic">citations</span></div>
+      </div>
+      <div class="module-card">
+        <div class="mnum">Performance</div>
+        <h4>성능 최적화</h4>
+        <p><b>프롬프트 캐싱</b>의 규칙과 실전 적용, 그리고 <b>코드 실행(Code Execution)</b>과 Files API로 지연시간·비용을 낮춥니다.</p>
+        <div class="topic-row"><span class="topic">prompt caching</span><span class="topic">code execution</span><span class="topic">Files API</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 4 -->
+<section id="m4" style="background:var(--paper-tint);">
+  <div class="wrap reveal">
+    <div class="kicker">Module 04 · 2 hr</div>
+    <h2 class="title">Model Context Protocol (MCP)</h2>
+    <p class="lede">Claude 애플리케이션에 툴·리소스를 제공하는 서버·클라이언트를 만드는 <b>표준화된 방식</b>을 배웁니다. 프로젝트마다 커스텀 툴 구현을 짜는 대신, <b>재사용 가능한 통합</b>을 만듭니다.</p>
+    <div class="deflist">
+      <div class="def"><div class="k">서버 설정 &amp; Inspector</div><div class="v">프로젝트를 세팅하고 <b>서버 인스펙터</b>로 구현을 확인합니다.</div></div>
+      <div class="def"><div class="k">클라이언트 구현</div><div class="v">MCP 클라이언트를 직접 구현해 서버와 <b>연결·통신</b>합니다.</div></div>
+      <div class="def"><div class="k">리소스 &amp; 프롬프트</div><div class="v"><b>리소스</b>를 정의·접근하고, <b>프롬프트</b>를 정의해 클라이언트에서 활용합니다.</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 5 -->
+<section id="m5">
+  <div class="wrap reveal">
+    <div class="kicker">Module 05 · 2 hr</div>
+    <h2 class="title">Retrieval Augmented Generation (RAG)</h2>
+    <p class="lede">Claude의 컨텍스트 한계를 해결하기 위해, 사용자 질의에 따라 대규모 문서 컬렉션에서 <b>관련 부분만 검색</b>해 제공하는 RAG 시스템을 만듭니다.</p>
+    <div class="compare-3">
+      <div class="cc-card">
+        <h4>Foundations</h4>
+        <div class="flow">텍스트 청킹 &amp; 임베딩</div>
+        <p class="small"><b>텍스트 청킹 전략</b>과 텍스트 임베딩으로 전체 RAG 흐름의 토대를 놓습니다.</p>
+      </div>
+      <div class="cc-card b">
+        <h4>Hybrid Search</h4>
+        <div class="flow">BM25 + 멀티 인덱스</div>
+        <p class="small"><b>BM25 어휘 검색</b>을 결합한 멀티 인덱스 RAG 파이프라인으로 검색 정확도를 높입니다.</p>
+      </div>
+      <div class="cc-card c">
+        <h4>Advanced Retrieval</h4>
+        <div class="flow">재순위화 &amp; 맥락적 검색</div>
+        <p class="small">검색 결과를 <b>재순위화(reranking)</b>하고, <b>맥락적 검색(Contextual Retrieval)</b>으로 정밀도를 한층 끌어올립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 6 -->
+<section id="m6" style="background:var(--paper-tint);">
+  <div class="wrap reveal">
+    <div class="kicker">Module 06 · 1 hr</div>
+    <h2 class="title">Claude Code &amp; Computer Use</h2>
+    <p class="lede">개발 작업에 <b>Claude Code</b>를 활용하고, 인터페이스 상호작용을 자동화하는 <b>Computer Use</b>로 애플리케이션을 만듭니다.</p>
+    <div class="deflist">
+      <div class="def"><div class="k">Claude Code 설정 &amp; 실전</div><div class="v">설정 방법과 실제 동작을 살펴보고, <b>MCP 서버</b>로 기능을 확장하며 Claude Code를 <b>병렬화</b>해 처리량을 높입니다.</div></div>
+      <div class="def"><div class="k">자동화된 디버깅</div><div class="v">코드 생성·리팩터링·디버깅·문서화 작업에 Claude Code를 적용해 개발을 가속합니다.</div></div>
+      <div class="def"><div class="k">Computer Use 원리</div><div class="v">Computer Use가 <b>어떻게 작동하는지</b> 이해하고, UI 자동화 상호작용을 구현합니다.</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- Module 7 -->
+<section id="m7">
+  <div class="wrap reveal">
+    <div class="kicker">Module 07 · 1 hr</div>
+    <h2 class="title">Agentic Workflows</h2>
+    <p class="lede">복잡한 다단계 작업을 처리하는 에이전틱 워크플로우를 설계·구현합니다. <b>언제 워크플로우를, 언제 단순 프롬프트를</b> 쓸지부터 시작해 3가지 핵심 패턴을 다룹니다.</p>
+    <div class="cmp-table-wrap">
+      <table class="cmp-table">
+        <tr>
+          <th>패턴</th>
+          <th class="col-a">설명</th>
+        </tr>
+        <tr><td>Parallelization</td><td>여러 작업을 <b>동시에</b> 실행해 처리 시간을 단축</td></tr>
+        <tr><td>Chaining</td><td>한 단계의 출력이 다음 단계의 입력이 되는 <b>순차 처리</b></td></tr>
+        <tr><td>Routing</td><td>중간 결과에 따라 <b>조건부로 분기</b>하는 라우팅</td></tr>
+      </table>
+    </div>
+    <div class="note-box"><b>워크플로우 vs 에이전트 —</b> 마지막 레슨은 정해진 단계를 따르는 <b>워크플로우</b>와, 스스로 판단해 툴을 골라 쓰는 <b>에이전트</b>의 차이, 그리고 환경을 점검(environment inspection)하며 상태를 파악하는 법을 정리하며 강좌를 마무리합니다.</div>
+  </div>
+</section>
+
+
+<section class="summary" id="conclusion">
+  <div class="wrap reveal">
+    <div class="kicker on-dark">Conclusion</div>
+    <h2 class="title on-dark">마치며</h2>
+    <p class="lede on-dark">이 강좌는 <b>"질문에 답하는 API 호출"에서 "스스로 계획하고 도구를 쓰는 에이전트"</b>까지의 거리를 7개 모듈로 좁힙니다. 각 모듈은 실습 과제와 퀴즈로 끝나, 개념이 아니라 <b>동작하는 코드</b>로 남습니다.</p>
+    <div class="recap-list">
+      <div class="recap-item"><span class="num">01</span><span class="rt">기초(인증·요청·시스템 프롬프트)부터 <b>평가 기반 프롬프트 엔지니어링</b>까지 순서대로 다집니다.</span></div>
+      <div class="recap-item"><span class="num">02</span><span class="rt"><b>Tool Use·MCP·RAG</b>로 Claude를 외부 데이터·시스템에 연결하는 세 가지 축을 완성합니다.</span></div>
+      <div class="recap-item"><span class="num">03</span><span class="rt">Claude Code·Computer Use로 실전 자동화를 경험하고, <b>병렬화·체이닝·라우팅</b>으로 에이전틱 워크플로우를 설계합니다.</span></div>
+    </div>
+    <div class="final-line"><b>다음 단계</b> — 콘솔에서 API 키를 발급받고 Module 1의 첫 요청부터 직접 실행해보세요. AWS Bedrock이나 Google Vertex AI 환경에서 배포해야 한다면, 같은 커리큘럼을 각 클라우드에 맞춰 재구성한 자매 강좌도 있습니다.</div>
+  </div>
+</section>
+
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Building with the Claude API · academy.claude.com/ko/courses/building-with-the-claude-api 기반 정리 — 제품 사양은 수시로 업데이트됩니다</span>
+    <a class="totop" href="#top">맨 위로 ↑</a>
+  </div>
+</footer>
+
+<script>
+  var progress = document.getElementById('progress');
+  var nav = document.getElementById('siteNav');
+  window.addEventListener('scroll', function(){
+    var h = document.documentElement;
+    var scrolled = (h.scrollTop) / (h.scrollHeight - h.clientHeight) * 100;
+    progress.style.width = scrolled + '%';
+    if(h.scrollTop > 40){ nav.classList.add('scrolled'); } else { nav.classList.remove('scrolled'); }
+  });
+  var hamBtn = document.getElementById('hamBtn');
+  var mobileMenu = document.getElementById('mobileMenu');
+  var mobileClose = document.getElementById('mobileClose');
+  function openMenu(){ mobileMenu.classList.add('open'); mobileClose.style.display='block'; }
+  function closeMenu(){ mobileMenu.classList.remove('open'); mobileClose.style.display='none'; }
+  hamBtn.addEventListener('click', openMenu);
+  mobileClose.addEventListener('click', closeMenu);
+  mobileMenu.querySelectorAll('a').forEach(function(a){ a.addEventListener('click', closeMenu); });
+  var revealObserver = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){ if(entry.isIntersecting){ entry.target.classList.add('in-view'); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.reveal').forEach(function(el){ revealObserver.observe(el); });
+</script>
+
+</body>
+</html>
