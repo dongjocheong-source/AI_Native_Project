@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>싱크의 아카이브 · Sync's Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=ADLaM+Display&family=Baloo+2:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="app">
+    <nav class="sidebar">
+      <button class="brand" id="brand-home" type="button" title="메인 포털로 돌아가기">
+        <span class="brand-mark">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
+          </svg>
+        </span>
+        <span class="brand-name">ARCHIVE HUB</span>
+      </button>
+
+      <ul class="nav-list" id="nav-list"></ul>
+
+      <div class="sidebar-footer">
+        강좌 · 프로젝트 · 노트 · 최신 뉴스를<br />
+        한 곳에 모아 기록합니다.
+      </div>
+    </nav>
+
+    <main class="main">
+      <section id="portal-view" class="portal-view">
+        <!-- (1) 인트로 -->
+        <section class="hero-intro">
+          <div class="hero-intro-inner">
+            <p class="hero-intro-eyebrow">SYNC'S ARCHIVE</p>
+            <h1 class="hero-intro-title">배운 것, 만든 것, 쓰는 것의 기록</h1>
+            <p class="hero-intro-sub">강좌 정리, 진행 중인 프로젝트, 짧은 노트, 최신 뉴스를 모아두는 공간입니다.</p>
+            <a class="hero-intro-cta" href="#latest">글 둘러보기</a>
+          </div>
+        </section>
+
+        <!-- (2) 커버 — AI 네이티브를 위한 4단계 정공법 -->
+        <div class="hero-cover">
+          <div class="hero-cover-image" style="background-image: url('assets/hero/hero-stairs.jpg');" role="img" aria-label="계단과 상승 그래프 이미지"></div>
+          <div class="hero-cover-content">
+            <h1 class="hero-cover-heading">AI 네이티브를 위한 4단계 정공법</h1>
+            <p class="hero-cover-highlight">!! 믿음 &gt;&gt; 목격 &gt;&gt; 활용 &gt;&gt; 행동 !!</p>
+          </div>
+        </div>
+
+        <!-- (3) 최신 글 -->
+        <section class="latest" id="latest">
+          <h2 class="latest-title">최신 글</h2>
+          <div class="latest-grid" id="latest-grid"></div>
+        </section>
+      </section>
+
+      <section id="category-view" class="category-view" hidden>
+        <header class="main-header">
+          <p class="eyebrow" id="page-eyebrow">CATEGORY</p>
+          <h1 class="page-title" id="page-title">-</h1>
+          <p class="page-desc" id="page-desc"></p>
+          <p class="item-count" id="item-count"></p>
+        </header>
+
+        <section class="item-grid" id="item-grid"></section>
+      </section>
+    </main>
+  </div>
+
+  <script src="icons.js"></script>
+  <script src="data.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
