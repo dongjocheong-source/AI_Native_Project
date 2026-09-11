@@ -11,7 +11,7 @@
 - A06_LLM Fallback 메커니즘 완벽 가이드
 - A07_LLM 속도 파헤쳐보기
 - A08_NVIDIA GPU 모니터링 완벽 가이드
-- A09_AI서버관리꿀팁 
+- A09_AI서버관리꿀팁
 ---
 
 ## [B] 노트
@@ -35,17 +35,18 @@
 - C04_영상프로젝트
 ---
 
-## [D] 학습자료 (강좌 요약)
-- D01_AI Capabilities and Limitations
-- D02_Teaching AI Fluency
-- D03_Claude Code 101
-- D04_Introduction to Claude Cowork
-- D05_Claude Platform 101
-- D06_Claude Code in Action
-- D07_Introduction to Model Context Protocol
-- D08_MCP: Advanced Topics
-- D09_Introduction to Subagents
-- D10_The AI-Native SDLC Playbook
-- D11_Introduction to Agent Skills
-- D12_Building with the Claude API
+## [D] 학습자료
+- D01_On-Premise_LLM
+- D02_OnDeviceAI
+---
+
+## [V] 북마크/즐겨찾기
+- V01_디자인 레퍼런스 모음
+- V02_개발자 블로그 모음
+- V03_뉴스레터 아카이브
+- V04_툴비교 아티클
+- V05_자주 쓰는 템플렛
+- V06_핵심 대시보드 링크
+- V07_즐겨 찾는 문서
+- V08_자주 쓰는 도구
 ---
