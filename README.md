@@ -12,6 +12,8 @@
 - A07_LLM 속도 파헤쳐보기
 - A08_NVIDIA GPU 모니터링 완벽 가이드
 - A09_AI서버관리꿀팁
+- *A10_The Four Pillars of AI Automation - AI Agent를 활용한 업무 자동화 및 생산성 혁신 전략 보고서
+- *A11_The Race to Superintelligence - 초지능의 도래와 인류의 존립 위기
 ---
 
 ## [B] 노트
