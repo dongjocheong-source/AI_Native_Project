@@ -38,8 +38,8 @@
 ---
 
 ## [D] 학습자료
-- D01_On-Premise_LLM
-- D02_OnDeviceAI
+- D01_Playwright_MCP_Summary
+- D02_Firecrawl_MCP_Summary
 ---
 
 ## [V] 북마크/즐겨찾기
